@@ -15,6 +15,7 @@ import numpy as np
 import ray
 import matplotlib.pyplot as plt
 from scipy import ndimage
+import pandas as pd
 
 import random as rand
 
@@ -22,7 +23,7 @@ import skimage, skimage.morphology
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import roc_curve
 from skimage.feature import peak_local_max
-from skimage.morphology import watershed
+from skimage.segmentation import watershed
 
 import subprocess
 import multiprocessing
@@ -43,7 +44,7 @@ num_threads = 40
 
 FLAGS = flags.FLAGS
 
-# flags.DEFINE_string('model_name', 'mlography_segment.hdf5', 'Model name')
+flags.DEFINE_string('model_name', 'mlography_segment.hdf5', 'Model name')
 flags.DEFINE_string('imp_model_name', 'preprocessed_imgs.hdf5', 'impurities model name')
 flags.DEFINE_string('gb_model_name', 'grains_128.hdf5', 'grains boundary name')
 flags.DEFINE_string('state', 'use', 'use if model should be used. train if the model should be trained, test if it should be tested')
@@ -1054,9 +1055,12 @@ def main(_):
         if FLAGS.keep_training:
             model_checkpoint = ModelCheckpoint(FLAGS.model_name, monitor='loss', verbose=1, save_best_only=True)
             # model.fit_generator(myGene, steps_per_epoch=300, epochs=100, callbacks=[model_checkpoint])
-            model.fit_generator(myGene, steps_per_epoch=300, epochs=300, callbacks=[model_checkpoint])
-            # model.fit_generator(myGene, steps_per_epoch=300, epochs=150, callbacks=[model_checkpoint])
-    
+            # model.fit_generator(myGene, steps_per_epoch=300, epochs=300, callbacks=[model_checkpoint])
+            history = model.fit_generator(myGene, steps_per_epoch=300, epochs=150, callbacks=[model_checkpoint])
+		    # Convert the logged metrics to a spreadsheet and save
+		    history_df = pd.DataFrame(history.history)
+		    history_df.to_csv('training_history.csv', index=False)
+	
         print("Finished training")
         # # testGene = testGenerator("data/membrane/test", num_image=30)
         # # results = model.predict_generator(testGene, 30, verbose=1)
