@@ -789,6 +789,7 @@ def divide_and_conquer(in_dir, in_img, stride, base_dir, base_dir_final, scale_f
     # preprocess_images_before_seg_parallel(squares_dir, prep_dir)
     print("Preprocessed squares in: " + prep_dir)
 
+    """"
     # impurities segmentation
     is_p = multiprocessing.Process(target=impurities_segmentation, args=(base_dir, prep_dir, in_img)) 
     is_p.start() 
@@ -818,7 +819,7 @@ def divide_and_conquer(in_dir, in_img, stride, base_dir, base_dir_final, scale_f
         os.makedirs(imps_mask_dir)
     save_mask(binaryfull_segment_out_dir, in_img, imps_mask_dir)
     print("Constructed mask in: " + imps_mask_dir)
-
+    """
     # impurities inpainting
     ii_p = multiprocessing.Process(target=impurities_inpainting, args=(base_dir_final, in_dir, in_img, png_file)) 
     ii_p.start() 
