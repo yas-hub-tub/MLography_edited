@@ -819,7 +819,7 @@ def divide_and_conquer(in_dir, in_img, stride, base_dir, base_dir_final, scale_f
     save_mask(binaryfull_segment_out_dir, in_img, imps_mask_dir)
     print("Constructed mask in: " + imps_mask_dir)
 
-	"""
+    """
     # impurities inpainting
     ii_p = multiprocessing.Process(target=impurities_inpainting, args=(base_dir_final, in_dir, in_img, png_file)) 
     ii_p.start() 
@@ -873,7 +873,7 @@ def divide_and_conquer(in_dir, in_img, stride, base_dir, base_dir_final, scale_f
                       postprocess_binary_out_dir, postprocess_masked_out_dir, 
                       without_impurities_dir)
     print("Post-processed edge binarization in: " + postprocess_segment_edges_out_dir)
-	"""
+    """
     return
 
 
